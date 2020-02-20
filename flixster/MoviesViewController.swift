@@ -57,11 +57,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     // This function configure each cell in the table view
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        // deque resuable cell use recly cell that are off the screen or if the not one a no offscreen varaible available it will create a new one.
+        // Performace!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieCell
         let movie = self.movies[indexPath.row]
         let title = movie["title"] as! String
+        let synopsis = movie["overview"] as! String
         
-        cell.textLabel!.text = title
+        cell.titleLabel!.text = title
+        cell.synopsisLabel!.text = synopsis
         
         return cell
     }
