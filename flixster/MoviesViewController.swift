@@ -8,12 +8,18 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var movies = [[String: Any]]()
 
+    // UI Element table view
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
         // Do any additional setup after loading the view.
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
@@ -30,6 +36,9 @@ class MoviesViewController: UIViewController {
                 // Key (String) : Value (Any)
                 self.movies = dataDictionary["results"] as! [[String : Any]]
                 
+                // At this point "self.movies" has been fetch so reload all the function and re executing them
+                self.tableView.reloadData()
+                
                 print(dataDictionary);
                 // TODO: Get the array of movies
                 // TODO: Store the movies in a property to use elsewhere
@@ -39,6 +48,22 @@ class MoviesViewController: UIViewController {
         }
         task.resume()
         
+    }
+    
+    // This function set the amount movies (rows) in the table view
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return movies.count
+    }
+    
+    // This function configure each cell in the table view
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        let movie = self.movies[indexPath.row]
+        let title = movie["title"] as! String
+        
+        cell.textLabel!.text = title
+        
+        return cell
     }
     
 
