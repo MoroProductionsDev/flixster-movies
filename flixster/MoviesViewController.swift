@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var movies = [[String: Any]]()
@@ -73,6 +74,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         cell.titleLabel!.text = title
         cell.synopsisLabel!.text = synopsis
+        // af_setImage is PODS library from (AlamofireImage)
+        cell.posterView.af_setImage(withURL: posterUrl!)
         
         return cell
     }
