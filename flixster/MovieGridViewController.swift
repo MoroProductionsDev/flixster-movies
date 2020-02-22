@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import AlamofireImage
 
-class MovieGridViewController: UIViewController {
+class MovieGridViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+    @IBOutlet weak var collectionView: UICollectionView!
     var movies = [[String: Any]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
         // Do any additional setup after loading the view.
         let url = URL(string: "https://api.themoviedb.org/3/movie/297762/similar?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
@@ -32,9 +36,7 @@ class MovieGridViewController: UIViewController {
                 self.movies = dataDictionary["results"] as! [[String : Any]]
                 
                 // At this point "self.movies" has been fetch so reload all the function and re executing them
-                // -- self.collectionView.reloadData()
-                
-                print(self.movies)
+                self.collectionView.reloadData()
                 
                 // TODO: Get the array of movies
                 // TODO: Store the movies in a property to use elsewhere
@@ -46,6 +48,27 @@ class MovieGridViewController: UIViewController {
         
     }
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return movies.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieGridCell", for: indexPath) as! MovieGridCell
+        
+        let movie = self.movies[indexPath.item]
+        
+        // API image base url for (jpg)
+        let baseUrl = "https://image.tmdb.org/t/p/w185"
+        // add the movie poster to the path
+        let posterPath = movie["poster_path"] as! String
+        // combine the api baseUrl with movies json posterPath
+        let posterUrl = URL(string : baseUrl + posterPath)
+        
+        // af_setImage is PODS library from (AlamofireImage)
+        cell.posterView.af_setImage(withURL: posterUrl!)
+        
+        return cell
+    }
 
     /*
     // MARK: - Navigation
