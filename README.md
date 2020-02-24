@@ -23,8 +23,6 @@ Flix is an app that allows users to browse movies from the [The Movie Database A
 ### Notes
 Describe any challenges encountered while building the app.
 
-📝 `NOTE` Paste this template at the top of your existing `README.md` file from part 1 of this assignment. (🚫 Remove this paragraph after after checking off completed user stories)
-
 ---
 ## Flix Part 2
 
@@ -40,7 +38,7 @@ Describe any challenges encountered while building the app.
 
 ### App Walkthough GIF
 
-<img src="YOUR_GIF_URL_HERE" width=250><br>
+<img src="flixster_movieslist_record(2).gif" width=250><br>
 
 ### Notes
 Describe any challenges encountered while building the app.
